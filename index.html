@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Open Weather API</title>
+
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="module" src="script.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <a class="navbar-brand" href="index.html">Open Weather</a>
+      </nav>
+      <div class="container">
+        <div class="card m-5">
+          <div class="card-header">現時天氣數據</div>
+          <div class="card-body text-center">
+            <h4 class="card-title">
+              地區: {{ this.weather.current?weather.current.sys.country:"" }}
+            </h4>
+            <p class="card-text">
+              天氣: {{ this.weather.current
+              ?weather.current.weather[0].description.toUpperCase():'error'}}
+            </p>
+            <p class="card-text">
+              溫度: {{ this.weather.current ?weather.current.main.temp+'°C':
+              'error'}}
+            </p>
+            <img
+              :src="getIconPath(this.weather.current?this.weather.current.weather[0].icon:'')"
+              :title="this.weather.current ?
+            weather.current.weather[0].main.toUpperCase() +': ' +
+            weather.current.weather[0].description.toUpperCase():'error'"
+            />
+          </div>
+          <div class="card-footer text-muted text-right">
+            By OpenWeather <i><a href="https://openweathermap.org/current">{Current}</a></i>
+          </div>
+        </div>
+        <div class="card m-5">
+          <div class="card-header">天氣預報</div>
+          <div class="card-body text-center">
+            <h4 class="card-title">
+              地區: {{ this.weather.forecast?weather.forecast.city.country:"" }}
+            </h4>
+            <div class="row">
+              <div
+                class="card col-2 m-3 py-2"
+                v-if="weather.forecast"
+                v-for="(item, index) in weather.forecast.list.slice(0, 10)"
+              >
+                <h4 class="card-title">Day {{ index+1 }}</h4>
+                <p class="card-text">
+                  天氣: {{ this.weather.forecast
+                  ?item.weather[0].description.toUpperCase():'error'}}
+                </p>
+                <p class="card-text">
+                  溫度: {{ this.weather.forecast ? item.main.temp+'°C':
+                  'error'}}
+                </p>
+                <img
+                  :src="getIconPath(this.weather.forecast?item.weather[0].icon:'')"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="card-footer text-muted text-right">
+            By OpenWeather <i><a href="https://openweathermap.org/api/forecast30">{Forecast30}</a></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
